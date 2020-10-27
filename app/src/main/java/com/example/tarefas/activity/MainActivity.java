@@ -1,7 +1,10 @@
-package com.example.tarefas;
+package com.example.tarefas.activity;
 
+
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.tarefas.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -12,6 +15,7 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,11 +27,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent adicionarActivity = new Intent(getApplicationContext(), AdicionarActivity.class);
+                startActivity(adicionarActivity);
             }
         });
     }
@@ -46,11 +51,23 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+            case R.id.itemEditar:
+                Toast.makeText(MainActivity.this,"Botão Editar",Toast.LENGTH_LONG).show();
+                break;
+
+            case R.id.itemSalvar:
+                Intent adicionarActivity = new Intent(this, AdicionarActivity.class);
+                startActivity(adicionarActivity);
+                break;
+
         }
+
+        //noinspection SimplifiableIfStatement
+
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }
