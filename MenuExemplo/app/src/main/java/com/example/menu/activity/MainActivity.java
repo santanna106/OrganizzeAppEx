@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.example.menu.R;
 import com.example.menu.helper.data.DbHelper;
+import com.example.menu.helper.data.TarefaDAO;
 import com.example.menu.model.Tarefa;
 import com.example.menu.ui.TarefaAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -38,12 +39,6 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
 
         recyclerView = findViewById(R.id.recyclerView);
-
-        DbHelper db = new DbHelper(getApplicationContext());
-
-        ContentValues cv = new ContentValues();
-        cv.put("nome","teste");
-        db.getWritableDatabase().insert("tarefas",null,cv);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +66,8 @@ public class MainActivity extends AppCompatActivity {
         //Listar tarefas
 
         //Exibe Lista de Tarefas no RecyclerView
-        Tarefa tarefa1 = new Tarefa();
-        tarefa1.setNomeTarefa("Ir ao mercado");
-        listaTarefas.add(tarefa1);
-
-        Tarefa tarefa2 = new Tarefa();
-        tarefa2.setNomeTarefa("Ir a Feira");
-        listaTarefas.add(tarefa2);
+        TarefaDAO dao = new TarefaDAO(getApplicationContext());
+        listaTarefas = dao.listar();
 
         //Configurar RecyclerView
         tarefaAdapter = new TarefaAdapter(listaTarefas);

@@ -2,11 +2,14 @@ package com.example.menu.helper.data;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.menu.model.Tarefa;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TarefaDAO implements ITarefaDAO {
@@ -50,6 +53,20 @@ public class TarefaDAO implements ITarefaDAO {
 
     @Override
     public List<Tarefa> listar() {
-        return null;
+        List<Tarefa> lista = new ArrayList<Tarefa>();
+        String sql = "SELECT id,nome FROM " + DbHelper.TABELA_TAREFAS + ";";
+        Cursor c = ler.rawQuery(sql,null);
+
+        while(c.moveToNext()){
+            Tarefa tarefa = new Tarefa();
+            Long id = c.getLong(c.getColumnIndex("id"));
+            String nome = c.getString(c.getColumnIndex("nome"));
+            tarefa.setId(id);
+            tarefa.setNomeTarefa(nome);
+
+            lista.add(tarefa);
+        }
+
+        return lista;
     }
 }
