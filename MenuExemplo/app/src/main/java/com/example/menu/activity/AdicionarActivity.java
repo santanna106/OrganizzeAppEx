@@ -10,14 +10,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.menu.R;
+import com.example.menu.helper.data.TarefaDAO;
+import com.example.menu.model.Tarefa;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class AdicionarActivity extends AppCompatActivity {
 
-    
+    private TextInputEditText editTarefa;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adicionar);
+        editTarefa = findViewById(R.id.editNomeTarefa);
     }
 
     @Override
@@ -33,6 +37,10 @@ public class AdicionarActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.itemSalvar:
+                TarefaDAO dao = new TarefaDAO(getApplicationContext());
+                Tarefa t = new Tarefa();
+                t.setNomeTarefa(editTarefa.getText().toString());
+                dao.salvar(t);
                 Intent mainActivity = new Intent(this, MainActivity.class);
                 startActivity(mainActivity);
                 break;
