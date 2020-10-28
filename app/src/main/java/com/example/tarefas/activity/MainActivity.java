@@ -5,26 +5,40 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.tarefas.R;
+import com.example.tarefas.adapter.TarefaAdapter;
+import com.example.tarefas.model.Tarefa;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView recyclerView;
+    private TarefaAdapter tarefaAdapter;
+    List<Tarefa> listaTarefas = new ArrayList<Tarefa>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+
+        recyclerView = findViewById(R.id.recyclerView);
 
         FloatingActionButton fab = findViewById(R.id.fab);
 
@@ -67,6 +81,34 @@ public class MainActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        carregarListaTarefas();
+        super.onStart();
+    }
+
+    public void carregarListaTarefas(){
+        //Listar tarefas
+
+        /*Exibe Lista de Tarefas no RecyclerView*/
+        Tarefa tarefa1 = new Tarefa();
+        tarefa1.setNome("Ir ao mercado");
+        listaTarefas.add(tarefa1);
+
+        Tarefa tarefa2 = new Tarefa();
+        tarefa2.setNome("Ir a Feira");
+        listaTarefas.add(tarefa2);
+
+        //Configurar RecyclerView
+        tarefaAdapter = new TarefaAdapter(listaTarefas);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), LinearLayout.VERTICAL));
+        recyclerView.setAdapter(tarefaAdapter);
+
     }
 
 
