@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.menu.R;
 import com.example.menu.helper.data.TarefaDAO;
@@ -37,12 +38,18 @@ public class AdicionarActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.itemSalvar:
-                TarefaDAO dao = new TarefaDAO(getApplicationContext());
-                Tarefa t = new Tarefa();
-                t.setNomeTarefa(editTarefa.getText().toString());
-                dao.salvar(t);
-                Intent mainActivity = new Intent(this, MainActivity.class);
-                startActivity(mainActivity);
+                String nomeTarefa = editTarefa.getText().toString();
+                if(!nomeTarefa.isEmpty()){
+                    TarefaDAO dao = new TarefaDAO(getApplicationContext());
+                    Tarefa t = new Tarefa();
+                    t.setNomeTarefa(nomeTarefa);
+                    dao.salvar(t);
+                    finish();
+                    //Intent mainActivity = new Intent(this, MainActivity.class);
+                    //startActivity(mainActivity);
+                }
+
+
                 break;
 
 
