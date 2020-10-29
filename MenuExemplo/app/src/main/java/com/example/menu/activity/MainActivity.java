@@ -1,11 +1,13 @@
 package com.example.menu.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.menu.R;
 import com.example.menu.helper.data.DbHelper;
@@ -56,6 +59,29 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
+                        Tarefa tarefaSelecionada = listaTarefas.get(position);
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+
+                        //Configurar titulo e mensagem
+                        dialog.setTitle("Confirmar exclusão");
+                        dialog.setMessage("Deseja excluir a tarefa: " + tarefaSelecionada.getNomeTarefa() + " ?") ;
+
+                        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                TarefaDAO tarefaDAO = new TarefaDAO(getApplicationContext());
+                                if(tarefaDAO.deletar(tarefaSelecionada)){
+                                    Toast.makeText(getApplicationContext(),"Sucesso ao deletar a tarefa",Toast.LENGTH_LONG);
+                                    carregarListaTarefas();
+                                } else {
+                                    Toast.makeText(getApplicationContext(),"Erro ao deletar a tarefa",Toast.LENGTH_LONG);
+                                }
+                            }
+                        });
+
+                        dialog.setNegativeButton("Não", null);
+                        dialog.create();
+                        dialog.show();
 
                     }
 
